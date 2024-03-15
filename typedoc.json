@@ -1,0 +1,4 @@
+{
+  "entryPoints": ["./src/home-work/shape/*.ts"],
+  "out": "./docs",
+}
