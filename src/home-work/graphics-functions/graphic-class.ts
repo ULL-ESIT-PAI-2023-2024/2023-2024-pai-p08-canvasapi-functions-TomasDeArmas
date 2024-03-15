@@ -16,18 +16,37 @@ import { Function } from './function-interface.js';
  * the functions graphically on web
  */
 export class Graphic {
+  private static instance: Graphic;
   private static canvas: HTMLCanvasElement;
   private static context: CanvasRenderingContext2D | null;
   private gridSize: number;
 
-  constructor(canvasId: string = '', gridSize: number = 20) {
+  /**
+   * The Singleton's constructor should always be private to prevent direct
+   * construction calls with the `new` operator.
+   */
+  private constructor(canvasId: string = '', gridSize: number = 20) {
     if (canvasId) {
       Graphic.canvas = <HTMLCanvasElement>document.getElementById(canvasId);
       Graphic.context = Graphic.canvas.getContext('2d');
+      alert('Canvas created');
     }
+    alert('Canvas not created');
     this.gridSize = gridSize;
     this.drawGrid();
     this.drawAxes();
+  }
+
+  /**
+   * The static method that controls the access to the Graphic instance.
+   */
+  public static getInstance(canvasId: string = '', gridSize: number = 20): Graphic {
+    if (!Graphic.instance) {
+      Graphic.instance = new Graphic(canvasId, gridSize);
+      alert('Graphic instance created');
+    }
+    alert('Graphic instance not created');
+    return Graphic.instance;
   }
 
   /**
@@ -93,8 +112,8 @@ export class Graphic {
     const scaleX = canvas.width / 2 / 10;
     const scaleY = canvas.height / 2 / 10;
 
+    // Reset the canvas
     context.clearRect(0, 0, canvas.width, canvas.height);
-
     this.drawGrid();
     this.drawAxes();
 

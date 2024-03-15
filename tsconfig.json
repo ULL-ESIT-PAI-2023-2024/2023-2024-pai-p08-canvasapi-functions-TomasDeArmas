@@ -1,12 +1,13 @@
 {
   "display": "Configuration for Graphics Programming in PAI",
   "compilerOptions": {
+    "moduleResolution": "node",
+    "esModuleInterop": true,
     "target": "es2022",
-    "module": "commonjs",
+    "module": "ES6",
     "allowJs": true,
     "rootDir": "./",
-    "outDir": "./web/dist",
-    "declaration": false,                     /* Generate (or not) .d.ts files for every TypeScript file inside your project */
+    "outDir": "./web/dist",                    /* Generate (or not) .d.ts files for every TypeScript file inside your project */
     "declaration": true,
     "alwaysStrict": true,                     /* Parse in strict mode and emit "use strict" for each source file */
     "strict": true,                           /* Enable all strict type-checking options */
@@ -26,6 +27,9 @@
         "dist",
         "docs",
         "search.js",
-        "main.js"
+        "main.js",
+        "go-back-function.js",
+        "app.js",
+        "web"
   ]
 }

@@ -1,14 +1,18 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>P07</title>
+    <title>P08-Graphics-Functions</title>
     <link rel="stylesheet" href="shape.css">
-    <script type="module" src="./dist/src/evaluation-session/midpoint/shape-generator.js"></script>
+    <script defer async src="./dist/src/home-work/graphics-functions/client-main.js"></script>
     <script src="go-back-function.js"></script>
   </head>
 <body>
   <buttonEscape onclick="goBack()">Atras</buttonEscape>
-  <button id ="generateButton">Generar Polígono</button>
+  <script>
+    window.onload = function() {
+      main();
+    };
+</script>
   <canvas id="mycanvas" width="1200" height="800"></canvas>
 </body>
 </html>

@@ -15,11 +15,12 @@ import { Polynomial } from './polynomial-class.js';
  * Class that defines a polynomial function
  * @implements {Function}
  */
-export class PolynomialFunction implements Function {
+export class PolynomialFunction extends Polynomial implements Function  {
   private polynomial: Polynomial;
 
-  constructor(polynomial: Polynomial) {
-    this.polynomial = polynomial;
+  constructor(...coefficients: number[]) {
+    super(...coefficients);
+    this.polynomial = new Polynomial(...coefficients);
   }
 
   /**
