@@ -27,6 +27,6 @@ export class Exponential implements Function {
    * @returns The result of the evaluation
    */
   evaluate(x: number): number {
-    return Math.pow(this.exponent, x);
+    return Math.pow(x, this.exponent);
   }
 }

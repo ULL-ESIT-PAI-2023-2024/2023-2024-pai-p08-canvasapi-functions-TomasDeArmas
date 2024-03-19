@@ -29,9 +29,7 @@ export class Graphic {
     if (canvasId) {
       Graphic.canvas = <HTMLCanvasElement>document.getElementById(canvasId);
       Graphic.context = Graphic.canvas.getContext('2d');
-      alert('Canvas created');
     }
-    alert('Canvas not created');
     this.gridSize = gridSize;
     this.drawGrid();
     this.drawAxes();
@@ -43,16 +41,14 @@ export class Graphic {
   public static getInstance(canvasId: string = '', gridSize: number = 20): Graphic {
     if (!Graphic.instance) {
       Graphic.instance = new Graphic(canvasId, gridSize);
-      alert('Graphic instance created');
     }
-    alert('Graphic instance not created');
     return Graphic.instance;
   }
 
   /**
    * This method draws the grid on the canvas
    */
-  private drawGrid() {
+  private drawGrid(): void {
     const canvas: HTMLCanvasElement = Graphic.canvas;
     const context: CanvasRenderingContext2D | null = Graphic.context;
     if (!context) throw new Error('Context is null');
@@ -81,7 +77,7 @@ export class Graphic {
   /**
    * This method draws the axes on the canvas
    */
-  private drawAxes() {
+  private drawAxes(): void {
     const canvas: HTMLCanvasElement = Graphic.canvas;
     const context: CanvasRenderingContext2D | null = Graphic.context;
     if (!context) throw new Error('Context is null');
@@ -102,10 +98,11 @@ export class Graphic {
   }
 
   /**
-   * This method draws the function graphically on the canvas
-   * @param func Function to draw
+   * This method draws the function on the canvas
+   * @param functionToPrint The function to draw
+   * @param color The color of the function
    */
-  drawFunction(func: Function, color: string = 'blue') {
+  drawFunction(functionToPrint: Function, color: string = 'blue'): void {
     const canvas: HTMLCanvasElement = Graphic.canvas;
     const context: CanvasRenderingContext2D | null = Graphic.context;
     if (!context) throw new Error('Context is null');
@@ -123,7 +120,7 @@ export class Graphic {
 
     for (let pixelX = 0; pixelX < canvas.width; pixelX++) {
       const x = (pixelX - canvas.width / 2) / scaleX;
-      const y = -func.evaluate(x) * scaleY + canvas.height / 2;
+      const y = -functionToPrint.evaluate(x) * scaleY + canvas.height / 2;
       if (pixelX === 0) {
         context.moveTo(pixelX, y);
       } else {

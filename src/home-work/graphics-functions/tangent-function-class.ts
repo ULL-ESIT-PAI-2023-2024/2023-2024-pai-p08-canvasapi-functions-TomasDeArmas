@@ -29,6 +29,6 @@ export class Tangent implements Function {
    * @returns The result of the evaluation
    */
   evaluate(x: number): number {
-    return this.amplitude * Math.cos(x);
+    return this.amplitude * Math.tan(x);
   }
 }
