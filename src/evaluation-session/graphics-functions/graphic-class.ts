@@ -22,6 +22,55 @@ export class Graphic {
   private gridSize: number;
 
   /**
+   * The static method that controls the access to the Graphic instance.
+   */
+  public static getInstance(canvasId: string = '', gridSize: number = 60): Graphic {
+    if (!Graphic.instance) {
+      Graphic.instance = new Graphic(canvasId, gridSize);
+    }
+    return Graphic.instance;
+  }
+
+  /**
+   * This method draws the function on the canvas
+   * @param functionToPrint The function to draw
+   * @param color The color of the function
+   */
+  drawFunction(functionToPrint: Function, color: string = 'blue'): void {
+    const canvas: HTMLCanvasElement = Graphic.canvas;
+    const context: CanvasRenderingContext2D | null = Graphic.context;
+    if (!context) throw new Error('Context is null');
+    const scaleX = canvas.width / 2 / 10;
+    const scaleY = canvas.height / 2 / 10;
+
+    context.beginPath();
+    context.strokeStyle = color;
+    context.lineWidth = 2;
+
+    for (let pixelX = 0; pixelX < canvas.width; pixelX++) {
+      const x = (pixelX - canvas.width / 2) / scaleX;
+      const y = -functionToPrint.evaluate(x) * scaleY + canvas.height / 2;
+      if (pixelX === 0) {
+        context.moveTo(pixelX, y);
+      } else {
+        context.lineTo(pixelX, y);
+      }
+    }
+
+    context.stroke();
+  }
+
+  /**
+   * Clear the canvas with a blank rectangle with the size of the canvas
+   */
+  clear(): void {
+    const canvas: HTMLCanvasElement = Graphic.canvas;
+    const context: CanvasRenderingContext2D | null = Graphic.context;
+    if (!context) throw new Error('Context is null');
+    context.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  /**
    * The Singleton's constructor should always be private to prevent direct
    * construction calls with the `new` operator.
    */
@@ -31,24 +80,14 @@ export class Graphic {
       Graphic.context = Graphic.canvas.getContext('2d');
     }
     this.gridSize = gridSize;
-    this.drawGrid();
+    this.drawNumbers();
     this.drawAxes();
   }
 
   /**
-   * The static method that controls the access to the Graphic instance.
+   * This method draws the numbers of the grid on the canvas
    */
-  public static getInstance(canvasId: string = '', gridSize: number = 50): Graphic {
-    if (!Graphic.instance) {
-      Graphic.instance = new Graphic(canvasId, gridSize);
-    }
-    return Graphic.instance;
-  }
-
-  /**
-   * This method draws the grid on the canvas
-   */
-  private drawGrid(): void {
+  private drawNumbers(): void {
     const canvas: HTMLCanvasElement = Graphic.canvas;
     const context: CanvasRenderingContext2D | null = Graphic.context;
     if (!context) throw new Error('Context is null');
@@ -58,24 +97,17 @@ export class Graphic {
     context.lineWidth = 1;
     context.font = "12px Arial";
 
-    context.setLineDash([5, 5]);
-
     // Drawing the horizontal lines and the numbers
     for (let y = this.gridSize; y < canvas.height; y += this.gridSize) {
       const num = Math.round((canvas.height / 2 - y) / this.gridSize);
-      context.moveTo(0, y);
-      context.lineTo(canvas.width, y);
       context.fillText(num.toString(), canvas.width / 2 - 15, y + 1);
     }
     // Drawing the vertical lines and the numbers
     for (let x = this.gridSize; x < canvas.width; x += this.gridSize) {
       const num = Math.round((x - canvas.width / 2) / this.gridSize);
-      context.moveTo(x, 0);
-      context.lineTo(x, canvas.height);
       context.fillText(num.toString(), x + 3, canvas.height / 2 + 10);
     }
     context.stroke();
-    context.setLineDash([])
   }
 
   /**
@@ -99,39 +131,5 @@ export class Graphic {
     context.lineTo(canvas.width, canvas.height / 2);
     context.stroke();
     context.fillText('X', canvas.width - 20, canvas.height / 2 + 20);
-  }
-
-  /**
-   * This method draws the function on the canvas
-   * @param functionToPrint The function to draw
-   * @param color The color of the function
-   */
-  drawFunction(functionToPrint: Function, color: string = 'blue'): void {
-    const canvas: HTMLCanvasElement = Graphic.canvas;
-    const context: CanvasRenderingContext2D | null = Graphic.context;
-    if (!context) throw new Error('Context is null');
-    const scaleX = canvas.width / 2 / 10;
-    const scaleY = canvas.height / 2 / 10;
-
-    // Reset the canvas
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    this.drawGrid();
-    this.drawAxes();
-
-    context.beginPath();
-    context.strokeStyle = color;
-    context.lineWidth = 2;
-
-    for (let pixelX = 0; pixelX < canvas.width; pixelX++) {
-      const x = (pixelX - canvas.width / 2) / scaleX;
-      const y = -functionToPrint.evaluate(x) * scaleY + canvas.height / 2;
-      if (pixelX === 0) {
-        context.moveTo(pixelX, y);
-      } else {
-        context.lineTo(pixelX, y);
-      }
-    }
-
-    context.stroke();
   }
 }
